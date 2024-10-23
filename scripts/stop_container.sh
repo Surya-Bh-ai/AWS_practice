@@ -1,7 +1,11 @@
 #!/bin/bash
 set -e
 
-# stop the running service on port 5000
-containerID = docker ps | awk -F" " '{Print $1}'
+# Stop the running service on port 5000
+containerID=$(docker ps -q --filter "expose=5000")
 
-docker rm -f $containerID
+if [ -n "$containerID" ]; then
+    docker rm -f $containerID
+else
+    echo "No container running on port 5000."
+fi
